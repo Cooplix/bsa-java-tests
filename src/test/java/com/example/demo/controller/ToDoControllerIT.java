@@ -35,7 +35,7 @@ class ToDoControllerIT {
 	@Test
 	void whenGetAll_thenReturnValidResponse() throws Exception {
 		String testText = "My to do text";
-		Long testId = 1l;
+		Long testId = 1L;
 		when(toDoService.getAll()).thenReturn(
 			Arrays.asList(
 				ToDoEntityToResponseMapper.map(new ToDoEntity(testId, testText))
