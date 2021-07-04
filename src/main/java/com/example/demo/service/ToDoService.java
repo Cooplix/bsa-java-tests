@@ -27,6 +27,12 @@ public class ToDoService {
 			.collect(Collectors.toList()); 
 	}
 
+	public List<ToDoResponse> getAllComplited() {
+		return toDoRepository.findByCompletedAndNotNull().stream()
+				.map(ToDoEntityToResponseMapper::map)
+				.collect(Collectors.toList());
+	}
+
 	public ToDoResponse upsert(ToDoSaveRequest toDoDTO) throws ToDoNotFoundException {
 		ToDoEntity todo;
 		//update if it has id or create if it hasn't

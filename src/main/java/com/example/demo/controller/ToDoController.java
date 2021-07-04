@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 public class ToDoController {
 
-
-	private ToDoService toDoService;
+	@Autowired
+	ToDoService toDoService;
 	
 	@ExceptionHandler({ ToDoNotFoundException.class })
 	public String handleException(Exception ex) {
@@ -40,6 +41,12 @@ public class ToDoController {
 	@Valid
 	public ToDoResponse save(@Valid @RequestBody ToDoSaveRequest todoSaveRequest) throws ToDoNotFoundException {
 		return toDoService.upsert(todoSaveRequest);
+	}
+
+	@GetMapping("/todos/complete")
+	@Valid
+	public List<ToDoResponse> getAllComplited() {
+		return toDoService.getAllComplited();
 	}
 
 	@PutMapping("/todos/{id}/complete")

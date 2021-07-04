@@ -38,11 +38,11 @@ class ToDoControllerIT {
 		String testText = "My to do text";
 		Long testId = 1L;
 		when(toDoService.getAll()).thenReturn(
-				Collections.singletonList(
+				Arrays.asList(
 						ToDoEntityToResponseMapper.map(new ToDoEntity(testId, testText))
 				)
 		);
-		
+
 		this.mockMvc
 			.perform(get("/todos"))
 			.andExpect(status().isOk())
