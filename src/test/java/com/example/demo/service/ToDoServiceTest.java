@@ -49,7 +49,7 @@ class ToDoServiceTest {
 		var todos = toDoService.getAll();
 
 		//validate
-		assertTrue(todos.size() == testToDos.size());
+		assertEquals(testToDos.size(), todos.size());
 		for (int i = 0; i < todos.size(); i++) {
 			assertThat(todos.get(i), samePropertyValuesAs(
 				ToDoEntityToResponseMapper.map(testToDos.get(i))
@@ -89,8 +89,8 @@ class ToDoServiceTest {
 		var todo = toDoService.upsert(toDoSaveRequest);
 
 		//validate
-		assertTrue(todo.id == toDoSaveRequest.id);
-		assertTrue(todo.text.equals(toDoSaveRequest.text));
+		assertSame(todo.id, toDoSaveRequest.id);
+		assertEquals(toDoSaveRequest.text, todo.text);
 	}
 	
 	@Test
@@ -120,8 +120,8 @@ class ToDoServiceTest {
 		var result = toDoService.upsert(toDoDto);
 
 		//validate
-		assertTrue(result.id == newId);
-		assertTrue(result.text.equals(toDoDto.text));
+		assertEquals(newId, (long) result.id);
+		assertEquals(toDoDto.text, result.text);
 	}
 
 	@Test
@@ -144,8 +144,8 @@ class ToDoServiceTest {
 		var result = toDoService.completeToDo(todo.getId());
 
 		//validate
-		assertTrue(result.id == todo.getId());
-		assertTrue(result.text.equals(todo.getText()));
+		assertSame(result.id, todo.getId());
+		assertEquals(todo.getText(), result.text);
 		assertTrue(result.completedAt.isAfter(startTime));
 	}
 

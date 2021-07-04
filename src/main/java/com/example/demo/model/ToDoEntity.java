@@ -1,4 +1,9 @@
 package com.example.demo.model;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
@@ -12,6 +17,10 @@ import javax.validation.constraints.NotNull;
  * ToDoEntity
  */
 @Entity
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ToDoEntity {
 
 	@Id
@@ -26,8 +35,6 @@ public class ToDoEntity {
 	@Basic
 	private ZonedDateTime completedAt;
 
-	public ToDoEntity() {}
-	
 	public ToDoEntity(String text) {
 		this.text = text;
 	}
@@ -35,12 +42,6 @@ public class ToDoEntity {
 	public ToDoEntity(Long id, String text) {
 		this.id = id;
 		this.text = text;
-	}
-	
-	public ToDoEntity(Long id, String text, ZonedDateTime completedAt) {
-		this.id = id;
-		this.text = text;
-		this.completedAt = completedAt;
 	}
 
 	@Override
