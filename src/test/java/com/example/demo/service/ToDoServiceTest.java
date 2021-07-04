@@ -39,8 +39,8 @@ class ToDoServiceTest {
 	void whenGetAll_thenReturnAll() {
 		//mock
 		var testToDos = new ArrayList<ToDoEntity>();
-		testToDos.add(new ToDoEntity(0l, "Test 1"));
-		var toDo = new ToDoEntity(1l, "Test 2");
+		testToDos.add(new ToDoEntity(0L, "Test 1"));
+		var toDo = new ToDoEntity(1L, "Test 2");
 		toDo.completeNow();
 		testToDos.add(toDo);
 		when(toDoRepository.findAll()).thenReturn(testToDos);
@@ -60,7 +60,7 @@ class ToDoServiceTest {
 	@Test
 	void whenUpsertWithId_thenReturnUpdated() throws ToDoNotFoundException {
 		//mock
-		var expectedToDo = new ToDoEntity(0l, "New Item");
+		var expectedToDo = new ToDoEntity(0L, "New Item");
 		when(toDoRepository.findById(anyLong())).thenAnswer(i -> {
 			Long id = i.getArgument(0, Long.class);
 			if (id.equals(expectedToDo.getId())) {
@@ -78,7 +78,7 @@ class ToDoServiceTest {
 				expectedToDo.setText(arg.getText());
 				return expectedToDo; //return valid result only if we get valid id
 			} else {
-				return new ToDoEntity(40158l, arg.getText());
+				return new ToDoEntity(40158L, arg.getText());
 			}
 		});
 		
@@ -96,7 +96,7 @@ class ToDoServiceTest {
 	@Test
 	void whenUpsertNoId_thenReturnNew() throws ToDoNotFoundException {
 		//mock
-		var newId = 0l;
+		var newId = 0L;
 		when(toDoRepository.findById(anyLong())).thenAnswer(i -> {
 			Long id = i.getArgument(0, Long.class);
 			if (id == newId) {
@@ -128,7 +128,7 @@ class ToDoServiceTest {
 	void whenComplete_thenReturnWithCompletedAt() throws ToDoNotFoundException {
 		var startTime = ZonedDateTime.now(ZoneOffset.UTC);
 		//mock
-		var todo = new ToDoEntity(0l, "Test 1");
+		var todo = new ToDoEntity(0L, "Test 1");
 		when(toDoRepository.findById(anyLong())).thenReturn(Optional.of(todo));
 		when(toDoRepository.save(ArgumentMatchers.any(ToDoEntity.class))).thenAnswer(i -> {
 			ToDoEntity arg = i.getArgument(0, ToDoEntity.class);
@@ -152,11 +152,11 @@ class ToDoServiceTest {
 	@Test
 	void whenGetOne_thenReturnCorrectOne() throws ToDoNotFoundException {
 		//mock
-		var todo = new ToDoEntity(0l, "Test 1");
+		var todo = new ToDoEntity(0L, "Test 1");
 		when(toDoRepository.findById(anyLong())).thenReturn(Optional.of(todo));
 
 		//call
-		var result = toDoService.getOne(0l);
+		var result = toDoService.getOne(0L);
 
 		//validate
 		assertThat(result, samePropertyValuesAs(
@@ -167,7 +167,7 @@ class ToDoServiceTest {
 	@Test
 	void whenDeleteOne_thenRepositoryDeleteCalled() {
 		//call
-		var id = 0l;
+		var id = 0L;
 		toDoService.deleteOne(id);
 
 		//validate
@@ -176,7 +176,7 @@ class ToDoServiceTest {
 
 	@Test
 	void whenIdNotFound_thenThrowNotFoundException() {
-		assertThrows(ToDoNotFoundException.class, () -> toDoService.getOne(1l));
+		assertThrows(ToDoNotFoundException.class, () -> toDoService.getOne(1L));
 	}
 
 	@Test
