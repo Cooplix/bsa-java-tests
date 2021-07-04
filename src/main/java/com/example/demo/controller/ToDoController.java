@@ -11,7 +11,6 @@ import com.example.demo.dto.ToDoSaveRequest;
 import com.example.demo.exception.ToDoNotFoundException;
 import com.example.demo.service.ToDoService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 public class ToDoController {
 
-	@Autowired
-	ToDoService toDoService;
+
+	private ToDoService toDoService;
 	
 	@ExceptionHandler({ ToDoNotFoundException.class })
 	public String handleException(Exception ex) {
@@ -32,27 +31,31 @@ public class ToDoController {
 	}
 	
 	@GetMapping("/todos")
-	@Valid List<ToDoResponse> getAll() {
+	@Valid
+	public List<ToDoResponse> getAll() {
 		return toDoService.getAll();
 	}
 
 	@PostMapping("/todos")
-	@Valid ToDoResponse save(@Valid @RequestBody ToDoSaveRequest todoSaveRequest) throws ToDoNotFoundException {
+	@Valid
+	public ToDoResponse save(@Valid @RequestBody ToDoSaveRequest todoSaveRequest) throws ToDoNotFoundException {
 		return toDoService.upsert(todoSaveRequest);
 	}
 
 	@PutMapping("/todos/{id}/complete")
-	@Valid ToDoResponse save(@PathVariable Long id) throws ToDoNotFoundException {
+	@Valid
+	public ToDoResponse save(@PathVariable Long id) throws ToDoNotFoundException {
 		return toDoService.completeToDo(id);
 	}
 
 	@GetMapping("/todos/{id}")
-	@Valid ToDoResponse getOne(@PathVariable Long id) throws ToDoNotFoundException {
+	@Valid
+	public ToDoResponse getOne(@PathVariable Long id) throws ToDoNotFoundException {
 		return toDoService.getOne(id);
 	}
 
 	@DeleteMapping("/todos/{id}")
-	void delete(@PathVariable Long id) {
+	public void delete(@PathVariable Long id) {
 		toDoService.deleteOne(id);
 	}
 

@@ -15,7 +15,7 @@ import com.example.demo.repository.ToDoRepository;
 @Service
 public class ToDoService {
 	
-	private ToDoRepository toDoRepository;
+	private final ToDoRepository toDoRepository;
 
 	public ToDoService(ToDoRepository toDoRepository) {
 		this.toDoRepository = toDoRepository;

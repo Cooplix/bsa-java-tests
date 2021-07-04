@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import com.example.demo.dto.mapper.ToDoEntityToResponseMapper;
 import com.example.demo.model.ToDoEntity;
@@ -37,9 +38,9 @@ class ToDoControllerIT {
 		String testText = "My to do text";
 		Long testId = 1L;
 		when(toDoService.getAll()).thenReturn(
-			Arrays.asList(
-				ToDoEntityToResponseMapper.map(new ToDoEntity(testId, testText))
-			)
+				Collections.singletonList(
+						ToDoEntityToResponseMapper.map(new ToDoEntity(testId, testText))
+				)
 		);
 		
 		this.mockMvc
