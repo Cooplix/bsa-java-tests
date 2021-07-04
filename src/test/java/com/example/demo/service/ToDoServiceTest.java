@@ -179,4 +179,9 @@ class ToDoServiceTest {
 		assertThrows(ToDoNotFoundException.class, () -> toDoService.getOne(1l));
 	}
 
+	@Test
+	void whenTextNotFound_thenThrowNotFoundException() {
+		assertThrows(ToDoNotFoundException.class, () -> toDoService.getByText(null));
+	}
+
 }
