@@ -185,7 +185,7 @@ class ToDoServiceTest {
 	}
 
 	@Test
-	void whenTextFound_thenReturnCorrectOne() throws ToDoNotFoundException {
+	void whenGetText_thenReturnCorrectText() throws ToDoNotFoundException {
 		//mock
 		var todo = new ToDoEntity(0L, "Test 1");
 		when(toDoRepository.findFirstByTextEqualsIgnoreCase(anyString())).thenReturn(Optional.of(todo));
