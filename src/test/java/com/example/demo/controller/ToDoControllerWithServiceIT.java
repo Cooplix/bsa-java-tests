@@ -75,16 +75,37 @@ class ToDoControllerWithServiceIT {
 				.andExpect(jsonPath("$").isArray())
 				.andExpect(jsonPath("$", hasSize(3)))
 				.andExpect(jsonPath("$[0].text").value(testText))
-				.andExpect(jsonPath("$[0].id").isNumber())
-				.andExpect(jsonPath("$[0].completedAt").doesNotExist())
-
 				.andExpect(jsonPath("$[1].text").value(testText))
-				.andExpect(jsonPath("$[1].id").isNumber())
-				.andExpect(jsonPath("$[1].completedAt").doesNotExist())
-
 				.andExpect(jsonPath("$[2].text").value(testText))
+				.andExpect(jsonPath("$[0].id").isNumber())
+				.andExpect(jsonPath("$[1].id").isNumber())
 				.andExpect(jsonPath("$[2].id").isNumber())
-				.andExpect(jsonPath("$[2].completedAt").doesNotExist());
+				.andExpect(jsonPath("$[0].completedAt").isNotEmpty())
+				.andExpect(jsonPath("$[1].completedAt").isNotEmpty())
+				.andExpect(jsonPath("$[2].completedAt").isNotEmpty());
+	}
+
+
+	@Test
+	void whenNotGetComplete_thenReturnEmptyValue() throws Exception {
+		String testText = "My to do text";
+
+		when(toDoRepository.findByCompletedAndNotNull()).thenReturn(
+				Arrays.asList(
+						new ToDoEntity(1L, testText)
+				)
+		);
+
+		this.mockMvc
+				.perform(get("/todos/complete"))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$").isArray())
+				.andExpect(jsonPath("$", hasSize(1)))
+				.andExpect(jsonPath("$[0].text").value(testText))
+				.andExpect(jsonPath("$[0].id").isNumber())
+				.andExpect(jsonPath("$[0].completedAt").isEmpty())
+;
 	}
 
 }
