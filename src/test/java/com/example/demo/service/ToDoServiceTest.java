@@ -181,6 +181,7 @@ class ToDoServiceTest {
 
 
 	//NEW TESTS
+
 	@Test
 	void whenTextNotFound_thenThrowNotFoundException() {
 		assertThrows(ToDoNotFoundException.class, () -> toDoService.getByText(null));
@@ -200,5 +201,17 @@ class ToDoServiceTest {
 				ToDoEntityToResponseMapper.map(todo)
 		));
 	}
+
+	@Test
+	void whenUpsertReceiveWrongId_ThenReturnThrows() {
+		//when
+		var todo = ToDoSaveRequest.builder()
+				.text("test")
+				.id(1000L)
+				.build();
+		//validate
+		assertThrows(ToDoNotFoundException.class, () -> toDoService.upsert(todo));
+	}
+
 
 }

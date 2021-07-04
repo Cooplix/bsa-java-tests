@@ -27,7 +27,7 @@ public class ToDoService {
 			.collect(Collectors.toList()); 
 	}
 
-	public List<ToDoResponse> getAllComplited() {
+	public List<ToDoResponse> getAllCompleted() {
 		return toDoRepository.findByCompletedAndNotNull().stream()
 				.map(ToDoEntityToResponseMapper::map)
 				.collect(Collectors.toList());

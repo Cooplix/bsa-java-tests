@@ -56,6 +56,8 @@ class ToDoControllerWithServiceIT {
 			.andExpect(jsonPath("$[0].completedAt").doesNotExist());
 	}
 
+	//NEW TESTS
+
 	@Test
 	void whenGetAllCompleteNow_thenReturnValidResponse() throws Exception {
 		String testText = "My to do text";
@@ -87,11 +89,11 @@ class ToDoControllerWithServiceIT {
 
 
 	@Test
-	void whenNotGetComplete_thenReturnEmptyValue() throws Exception {
+	void whenNotGetCompleteNow_thenReturnEmptyValue() throws Exception {
 		String testText = "My to do text";
 
 		when(toDoRepository.findByCompletedAndNotNull()).thenReturn(
-				Arrays.asList(
+				Collections.singletonList(
 						new ToDoEntity(1L, testText)
 				)
 		);
@@ -104,8 +106,24 @@ class ToDoControllerWithServiceIT {
 				.andExpect(jsonPath("$", hasSize(1)))
 				.andExpect(jsonPath("$[0].text").value(testText))
 				.andExpect(jsonPath("$[0].id").isNumber())
-				.andExpect(jsonPath("$[0].completedAt").isEmpty())
-;
+				.andExpect(jsonPath("$[0].completedAt").isEmpty());
+	}
+
+	@Test
+	void whenGetAllButEntityEmpty_thenReturnValidResponse() throws Exception {
+		//тут я хотів перевірити що буду
+		//якщо немає ніяких задач
+		//але не впевнений в правильності написаного
+		//чи для того що я хотів написав тест, чи він провірить зовсім інше
+		this.mockMvc
+				.perform(get("/todos"))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$").isEmpty())
+				.andExpect(jsonPath("$", hasSize(0)))
+				.andExpect(jsonPath("$[0].text").doesNotExist())
+				.andExpect(jsonPath("$[0].id").doesNotExist())
+				.andExpect(jsonPath("$[0].completedAt").doesNotExist());
 	}
 
 }

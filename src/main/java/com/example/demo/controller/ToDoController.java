@@ -45,8 +45,8 @@ public class ToDoController {
 
 	@GetMapping("/todos/complete")
 	@Valid
-	public List<ToDoResponse> getAllComplited() {
-		return toDoService.getAllComplited();
+	public List<ToDoResponse> getAllCompleted() {
+		return toDoService.getAllCompleted();
 	}
 
 	@PutMapping("/todos/{id}/complete")
