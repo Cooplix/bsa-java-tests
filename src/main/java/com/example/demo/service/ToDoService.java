@@ -23,7 +23,7 @@ public class ToDoService {
 	
 	public List<ToDoResponse> getAll() {
 		return toDoRepository.findAll().stream()
-			.map(i -> ToDoEntityToResponseMapper.map(i))
+			.map(ToDoEntityToResponseMapper::map)
 			.collect(Collectors.toList()); 
 	}
 
@@ -50,9 +50,13 @@ public class ToDoService {
 			toDoRepository.findById(id).orElseThrow(() -> new ToDoNotFoundException(id))
 		);
 	}
-
 	public void deleteOne(Long id) {
 		toDoRepository.deleteById(id);
 	}
+
+	public ToDoResponse getByText(String text) throws ToDoNotFoundException {
+		return ToDoEntityToResponseMapper.map(toDoRepository.findFirstByTextEqualsIgnoreCase(text).orElseThrow(() -> new ToDoNotFoundException(text)));
+	}
+
 
 }

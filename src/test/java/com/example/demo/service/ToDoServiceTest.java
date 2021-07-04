@@ -176,7 +176,27 @@ class ToDoServiceTest {
 
 	@Test
 	void whenIdNotFound_thenThrowNotFoundException() {
-		assertThrows(ToDoNotFoundException.class, () -> toDoService.getOne(1l));
+		assertThrows(ToDoNotFoundException.class, () -> toDoService.getOne(1L));
+	}
+
+	@Test
+	void whenTextNotFound_thenThrowNotFoundException() {
+		assertThrows(ToDoNotFoundException.class, () -> toDoService.getByText(null));
+	}
+
+	@Test
+	void whenGetText_thenReturnCorrectText() throws ToDoNotFoundException {
+		//mock
+		var todo = new ToDoEntity(0L, "Test 1");
+		when(toDoRepository.findFirstByTextEqualsIgnoreCase(anyString())).thenReturn(Optional.of(todo));
+
+		//call
+		var result = toDoService.getByText("Test 1");
+
+		//validate
+		assertThat(result, samePropertyValuesAs(
+				ToDoEntityToResponseMapper.map(todo)
+		));
 	}
 
 }
