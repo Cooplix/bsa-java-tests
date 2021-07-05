@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ToDoController.class)
 @ActiveProfiles(profiles = "test")
 @Import(ToDoService.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ToDoControllerWithServiceIT {
 
 	@Autowired
@@ -34,6 +35,7 @@ class ToDoControllerWithServiceIT {
 
 	@MockBean
 	private ToDoRepository toDoRepository;
+
 
 	@Test
 	void whenGetAll_thenReturnValidResponse() throws Exception {
@@ -149,7 +151,33 @@ class ToDoControllerWithServiceIT {
 				.andExpect(status().isOk());
 	}
 
+	@Test
+	@Order(1)
+	public void save() throws Exception {
 
+		this.mockMvc.perform(post("/todos").contentType(MediaType.APPLICATION_JSON)
+				.content("{\"id\": 3, \"text\": \"test text\"}")
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$[2].id").value(3L))
+				.andExpect(jsonPath("$[2].text").value("test text"))
+				.andExpect(jsonPath("$[2].completedAt").doesNotExist());
+
+
+	}
+
+	@Test
+	@Order(2)
+	void whenToDoCompleted_thenReturnValidResponse() throws Exception {
+		this.mockMvc.perform(put("/todos/{id}/complete", 3L).contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$[3].id").value(3L))
+				.andExpect(jsonPath("$[3].text").value("test text"))
+				.andExpect(jsonPath("$[3].completedAt").exists());
+	}
 
 
 

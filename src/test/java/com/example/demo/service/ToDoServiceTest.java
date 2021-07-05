@@ -21,6 +21,7 @@ import com.example.demo.dto.mapper.ToDoEntityToResponseMapper;
 import com.example.demo.exception.ToDoNotFoundException;
 import com.example.demo.model.ToDoEntity;
 import com.example.demo.repository.ToDoRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 class ToDoServiceTest {
 
@@ -221,5 +222,6 @@ class ToDoServiceTest {
 		//validate
 		assertThrows(ToDoNotFoundException.class, () -> toDoService.completeToDo(wrongId));
 	}
+
 
 }
