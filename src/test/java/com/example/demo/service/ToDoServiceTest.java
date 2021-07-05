@@ -213,5 +213,13 @@ class ToDoServiceTest {
 		assertThrows(ToDoNotFoundException.class, () -> toDoService.upsert(todo));
 	}
 
+	@Test
+	void whenCompleteToDoWrongId_thenRepositoryDeleteCalled() {
+		//call
+		var wrongId = 1000L;
+
+		//validate
+		assertThrows(ToDoNotFoundException.class, () -> toDoService.completeToDo(wrongId));
+	}
 
 }

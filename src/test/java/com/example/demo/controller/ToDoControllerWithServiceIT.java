@@ -11,13 +11,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import com.example.demo.model.ToDoEntity;
 import com.example.demo.repository.ToDoRepository;
@@ -62,7 +61,7 @@ class ToDoControllerWithServiceIT {
 	void whenGetAllCompleteNow_thenReturnValidResponse() throws Exception {
 		String testText = "My to do text";
 
-		when(toDoRepository.findByCompletedAndNotNull()).thenReturn(
+		when(toDoRepository.findByCompletedAtNotNull()).thenReturn(
 				Arrays.asList(
 						new ToDoEntity(1L, testText).completeNow(),
 						new ToDoEntity(2L, testText).completeNow(),
@@ -92,7 +91,7 @@ class ToDoControllerWithServiceIT {
 	void whenNotGetCompleteNow_thenReturnEmptyValue() throws Exception {
 		String testText = "My to do text";
 
-		when(toDoRepository.findByCompletedAndNotNull()).thenReturn(
+		when(toDoRepository.findByCompletedAtNotNull()).thenReturn(
 				Collections.singletonList(
 						new ToDoEntity(1L, testText)
 				)
@@ -111,7 +110,7 @@ class ToDoControllerWithServiceIT {
 
 	@Test
 	void whenGetAllButEntityEmpty_thenReturnValidResponse() throws Exception {
-		//тут я хотів перевірити що буду
+		//тут я хотів перевірити що буде
 		//якщо немає ніяких задач
 		//але не впевнений в правильності написаного
 		//чи для того що я хотів написав тест, чи він провірить зовсім інше
@@ -125,5 +124,33 @@ class ToDoControllerWithServiceIT {
 				.andExpect(jsonPath("$[0].id").doesNotExist())
 				.andExpect(jsonPath("$[0].completedAt").doesNotExist());
 	}
+
+	@Test
+	void whenGetWrongToDoId_thenReturnThrows() throws Exception {
+
+		this.mockMvc
+				.perform(get("/todos/1000"))
+				.andExpect(status().isOk())
+				.andExpect(content().string("Can not find todo with id 1000"));
+	}
+
+	@Test
+	void whenPutCompleteWrongId_thenReturnThrows() throws Exception {
+		this.mockMvc
+				.perform(put("/todos/10/complete"))
+				.andExpect(status().isOk())
+				.andExpect(content().string("Can not find todo with id 10"));
+	}
+
+	@Test
+	void whenDeleteOne_thenReturnValidResponse() throws Exception {
+		this.mockMvc
+				.perform(delete("/todos/{id}", 1L))
+				.andExpect(status().isOk());
+	}
+
+
+
+
 
 }

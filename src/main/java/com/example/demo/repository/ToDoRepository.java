@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface ToDoRepository extends JpaRepository<ToDoEntity, Long> {
 
     Optional<ToDoEntity> findFirstByTextEqualsIgnoreCase(String text);
-    List<ToDoEntity> findByCompletedAndNotNull();
+
+    List<ToDoEntity> findByCompletedAtNotNull();
 }
