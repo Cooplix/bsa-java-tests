@@ -5,7 +5,6 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
 import static org.mockito.Mockito.*;
-import static org.mockito.AdditionalAnswers.*;
 import org.mockito.ArgumentMatchers;
 
 import java.time.ZoneOffset;
@@ -21,7 +20,6 @@ import com.example.demo.dto.mapper.ToDoEntityToResponseMapper;
 import com.example.demo.exception.ToDoNotFoundException;
 import com.example.demo.model.ToDoEntity;
 import com.example.demo.repository.ToDoRepository;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 class ToDoServiceTest {
 
